@@ -31,12 +31,22 @@ public class Lorenz implements KeyListener,
 
     boolean paused = false;
     boolean showTimers = true;
-    int timer = 20; // ms
+    int timer = 5; // ms
     long updateOrbitTime, repaintTime; //ns
     int proc_time;  // ms, time required to process and repaint
     int frame_time;  // ms, time to process, draw a frame
 
-    double rho, sigma, beta;
+    // Indices to plot a 3D vector in a 2D screen.
+    // 0: x, 1: y, 3: z
+    // So default plots x-y plane. keyevents will change this.
+    int idxViewX = 0;
+    int idxViewY = 1;
+
+
+    double rho = 28.0;
+    double sigma = 10.0;
+    double beta = 8.0 / 3.0;
+    double dt = 0.01;
 
     boolean showOrbits = true;
     int size = 5000;
@@ -91,13 +101,7 @@ public class Lorenz implements KeyListener,
         long t0, t1, t2;
         int i;
 
-        double x, y, z, dt;
-        rho = 28.0;
-        sigma = 10.0;
-        beta = 8.0 / 3.0;
-
-        dt = 0.05;
-
+        double x, y, z;
         x = 1.0;
         y = 1.0;
         z = 1.0;
@@ -177,6 +181,24 @@ public class Lorenz implements KeyListener,
                 System.out.println("T");
                 showTimers = !showTimers;
                 System.out.println("   showTimers " + showTimers);
+                break;
+            case KeyEvent.VK_X:
+                System.out.println("X");
+                System.out.println("   view y-z plane ");
+                idxViewX = 1;
+                idxViewY = 2;
+                break;
+            case KeyEvent.VK_Y:
+                System.out.println("Y");
+                System.out.println("   view x-z plane ");
+                idxViewX = 0;
+                idxViewY = 2;
+                break;
+            case KeyEvent.VK_Z:
+                System.out.println("Z");
+                System.out.println("   view x-y plane ");
+                idxViewX = 0;
+                idxViewY = 1;
                 break;
             case KeyEvent.VK_UP:
                 System.out.println("up");
@@ -264,19 +286,18 @@ public class Lorenz implements KeyListener,
 
             gfx.fillRect(0, 0, w, h);
             gfx.setColor(Color.blue);
-            int x = (int)((orbit[orbitPoints-1][0] - radius) / scale + shiftX);
-            int y = (int)((orbit[orbitPoints-1][1] - radius) / scale + shiftY);
-            int z = (int)((orbit[orbitPoints-1][2] - radius) / scale + shiftY);
             int r = (int)(radius / scale);
-            gfx.fillOval(x, y, 2*r, 2*r);
+            gfx.fillOval((int)((orbit[orbitPoints-1][idxViewX] - radius) / scale + shiftX),
+                         (int)((orbit[orbitPoints-1][idxViewY] - radius) / scale + shiftY),
+                         2*r, 2*r);
 
             if (showOrbits) {
                 gfx.setColor(Color.gray);
                 for (int i=0; i < orbitPoints-1; i++) {
-                    gfx.drawLine((int)(orbit[i  ][0]/scale + shiftX),
-                                 (int)(orbit[i  ][1]/scale + shiftY),
-                                 (int)(orbit[i+1][0]/scale + shiftX),
-                                 (int)(orbit[i+1][1]/scale + shiftY));
+                    gfx.drawLine((int)(orbit[i  ][idxViewX]/scale + shiftX),
+                                 (int)(orbit[i  ][idxViewY]/scale + shiftY),
+                                 (int)(orbit[i+1][idxViewX]/scale + shiftX),
+                                 (int)(orbit[i+1][idxViewY]/scale + shiftY));
                 }
             }
 

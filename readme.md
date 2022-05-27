@@ -9,6 +9,9 @@ Currently only plotting x and y, although z is calculated.
   * `p` pause
   * `o` toggle show orbits
   * `e` erase orbits
+  * `z` view x-y plane (default)
+  * `x` view y-z plane
+  * `y` view x-z plane
   * `up` and `down` increase and decrease rho
   * `right` and `left` increase and decrease sigma
 
