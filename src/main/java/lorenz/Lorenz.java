@@ -8,13 +8,6 @@ package lorenz;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import static java.lang.Math.abs;
-import static java.lang.Math.pow;
-import static java.lang.Math.sqrt;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  *
@@ -99,8 +92,6 @@ public class Lorenz implements KeyListener,
         System.out.println("start()");
         System.out.println(panel.getWidth() + " " + panel.getHeight());
         long t0, t1, t2;
-        int i;
-
         double x, y, z;
         x = 1.0;
         y = 1.0;
